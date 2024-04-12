@@ -30,9 +30,9 @@ public class Ventas {
             Citas objetoCitas = listaCitas.get(i);
             if(nombreCliente.equals(objetoCitas.getNombreCompleto())){ 
                 System.out.println("Confirmacion de citas\n¿El servicio se realizó correctamente?(true/false)" );
-                datoConfirmacion1 = entrada.nextBoolean();//agregar una comprobacion.
+                datoConfirmacion1 = entrada.nextBoolean();
                 System.out.println("¿El pago se realizo correctamente?(true/false)" );
-                datoConfirmacion2 = entrada.nextBoolean();//agregar una comprobacion.
+                datoConfirmacion2 = entrada.nextBoolean();
                 if(datoConfirmacion1==true && datoConfirmacion2==true){
                     System.out.println("El servicio y el pago se realizo correctamente");
                     objVentas.setObjetoCitas(objetoCitas);

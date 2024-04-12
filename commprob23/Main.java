@@ -58,8 +58,7 @@ public class Main {
     public static void VerMenuCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> listaCitas,Calendario objCalendario){
         Scanner entrada = new Scanner(System.in); 
         int r1; 
-        //Calendario  objCalendario =new Calendario();  
-        Citas objCitas = new Citas();
+       
         do {
             System.out.println("Menú citas.");
             System.out.println("Seleccionar (1 Agregar cita/2 Editar cita/3 Mostrar citas/4 Eliminar cita/5 Salir).");
@@ -74,7 +73,7 @@ public class Main {
                     }else{
                         int r2;
                         do {
-                            objCalendario.agregarCitas(listaServicios,listaCitas, null);
+                            objCalendario.agregarCitas(listaServicios,listaCitas);
                             listaCitas.add(objCalendario.getObjetoCitas());
                             System.out.println("¿Quieres agregar otra cita (1 Sí/2 No)?.");
                             do {
@@ -118,7 +117,6 @@ public class Main {
             switch (r1) {
                 case 1:
                 do {
-                    //objServicios =new Servicios();
                     objServicios.agregarServicios();
                     listaServicios.add(objServicios);
                     System.out.println("¿Quieres agregar otro servicio (1 Sí/2 No)?.");
@@ -181,8 +179,7 @@ public class Main {
         objeto2Citas.setObjServicios(objetoservicios);
         listaCitas.add(objeto2Citas);
 
-        //9:00 am - 5:00 pm
-        
+   
         do {
             System.out.println("Menú principal.");
             System.out.println("Seleccionar (1 Ver citas/2 Menú de ventas/3 Menú de citas/4 Menú de servicios/5 Salir).");

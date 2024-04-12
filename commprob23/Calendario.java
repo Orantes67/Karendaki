@@ -1,7 +1,6 @@
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -10,7 +9,7 @@ public class Calendario {
     
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
-    private Citas objetoCitas = null;
+    private Citas objetoCitas = new Citas();
 
     public void setObjetoCitas(Citas objetoCitas) {
         this.objetoCitas = objetoCitas;
@@ -48,14 +47,13 @@ public class Calendario {
     }
     
 
-public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> listaCitas, Date fechaactual){
+public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> listaCitas ){
         Scanner entrada = new Scanner(System.in);
         Citas objetoCitas = new Citas();
         Servicios Servicio = new Servicios();
-        String nombreCompleto="",fecha,hora;
+        String nombreCompleto,fecha;
         boolean bandera = true;
         Date fechaCita = null;
-        boolean bandera2 = true;
         int r1;
         long numeroCelular;
         
@@ -73,7 +71,7 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                 }
             }
         } while (objetoCitas.getNombreCompleto().equals(nombreCompleto));
-            objetoCitas.setNombreCompleto(nombreCompleto);
+            getObjetoCitas().setNombreCompleto(nombreCompleto);
 
         System.out.println("Ingresa el numero de telefono.");
         do{
@@ -83,14 +81,14 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                 System.out.println("El número de teléfono debe tener 10 dígitos. Por favor, ingréselo nuevamente:");
             }
         }while(numeroCelular <= 1000000000 && numeroCelular <= 999999999);
-        objetoCitas.setNumeroCelular(numeroCelular);
+        getObjetoCitas().setNumeroCelular(numeroCelular);
 
-        Citas citas=null;
+        Citas citas;
         int i,hora2;
         boolean bandera3= false;
         int diaSemana;
-        DiasEntreSemana objectDES = new DiasEntreSemana("patata");
-        FinDeSemana objectFES = new FinDeSemana("patata");
+        DiasEntreSemana objectDES = new DiasEntreSemana("sabado y domingo");
+        DiasFinDeSemana objectFES = new DiasFinDeSemana("lunes, martes, miercoles, jueves, viernes");
         Calendar calendario = Calendar.getInstance();
         do {
             
@@ -138,8 +136,8 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                         
                         if(objectFES.verificarHora(hora2)==true && hora2!=citas.getHora() && fecha.equalsIgnoreCase(citas.getFecha())&&i==listaCitas.size()-1){
                             System.out.println("hora disponible, patata");
-                            objetoCitas.setHora(hora2); 
-                            objetoCitas.setFecha(fecha);
+                            getObjetoCitas().setHora(hora2); 
+                            getObjetoCitas().setFecha(fecha);
                             bandera3=true;
                         }
                          if(hora2==citas.getHora()&&fecha.equalsIgnoreCase(citas.getFecha())){
@@ -152,8 +150,8 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                         }
                          if(objectFES.verificarHora(hora2)==true&&!fecha.equalsIgnoreCase(citas.getFecha())&&i==listaCitas.size()-1){     
                             System.out.println("hora disponible");
-                            objetoCitas.setHora(hora2); 
-                            objetoCitas.setFecha(fecha);
+                            getObjetoCitas().setHora(hora2); 
+                            getObjetoCitas().setFecha(fecha);
                             bandera3=true;
                         }
                         }
@@ -173,8 +171,8 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                         
                         if(objectDES.verificarHora(hora2)==true && hora2!=citas.getHora() && fecha.equalsIgnoreCase(citas.getFecha())&&i==listaCitas.size()-1){
                             System.out.println("hora disponible, patata");
-                            objetoCitas.setHora(hora2); 
-                            objetoCitas.setFecha(fecha);
+                            getObjetoCitas().setHora(hora2); 
+                            getObjetoCitas().setFecha(fecha);
                             bandera3=true;
                         }
                          if(hora2==citas.getHora()&&fecha.equalsIgnoreCase(citas.getFecha())){
@@ -187,8 +185,8 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                         }
                          if(objectDES.verificarHora(hora2)==true&&!fecha.equalsIgnoreCase(citas.getFecha())&&i==listaCitas.size()-1){             
                             System.out.println("hora disponible");
-                            objetoCitas.setHora(hora2); 
-                            objetoCitas.setFecha(fecha);
+                            getObjetoCitas().setHora(hora2); 
+                            getObjetoCitas().setFecha(fecha);
                             bandera3=true;
                         }
                         }
@@ -205,7 +203,7 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
             System.out.println("ingrese el numero de un servicio existente");
         } while (r1<=0||r1>listaServicios.size());
         Servicio = listaServicios.get(r1-1);
-        objetoCitas.setObjServicios(Servicio);
+        getObjetoCitas().setObjServicios(Servicio);
     }
 
     public boolean buscarCitas(ArrayList<Citas> listaCitas) {
@@ -234,8 +232,7 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
 
             Scanner entrada = new Scanner(System.in);
             System.out.println("Ingrese el nombre del cliente");
-            nombre = entrada.next();
-            entrada.nextLine();
+            nombre = entrada.nextLine();
             for (Citas objetoCitas : listaCitas) {
                 if (nombre.equals(objetoCitas.getNombreCompleto())) {
                     System.out.println("¿Qué quieres editar?(1 Nombre del cliente/2 Numero Telefonico/3 Fecha y Hora/4 Servicio/5 Salir).");
@@ -248,17 +245,14 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                         case 1:
                         do {
                             System.out.println("Ingresa el nuevo nombre: ");
-                            for(int i=0; i<listaCitas.size();i++){
-                                objetoCitas = listaCitas.get(i);
-                            entrada.nextLine();
-                            nuevoNombre = entrada.nextLine();
-                            if(objetoCitas.getNombreCompleto().equals(nuevoNombre)){
+                            Scanner in = new Scanner(System.in);
+                            nuevoNombre = in.nextLine();
+                            if(nombre.equals(nuevoNombre)){
                                 System.out.println("Es el mismo nombre, ingresa uno distinto");
-                                i=10000;
+                                
                                }
-                        }
                         
-                    } while (objetoCitas.getNombreCompleto().equals(nuevoNombre));
+                    } while (nombre.equals(nuevoNombre));
                             System.out.println("Antiguo nombre: " + objetoCitas.getNombreCompleto());
                             objetoCitas.setNombreCompleto(nuevoNombre);
                             break;
@@ -283,8 +277,8 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                         int i,hora2;
                         boolean bandera3= false;
                         int diaSemana;
-                        DiasEntreSemana objectDES = new DiasEntreSemana("patata");
-                        FinDeSemana objectFES = new FinDeSemana("patata");
+                        DiasEntreSemana objectDES = new DiasEntreSemana("sabado y domingo");
+                          DiasFinDeSemana objectFES = new DiasFinDeSemana("lunes, martes, miercoles, jueves, viernes");
                         Calendar calendario = Calendar.getInstance();
                         do {
                             
@@ -306,7 +300,7 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                                     
                                     if(fechaCita!=null){
                                         if (validarFecha(fechaCita)==true) {
-                                            System.out.println("La fecha de la cita debe ser igual o posterior a la fecha actual.");
+                                            System.out.println("La fecha de la cita  posterior a la fecha actual.");
                                         bandera = true;
                                         }
                                     }
@@ -331,7 +325,7 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                                     citas = listaCitas.get(i);
                                         
                                         if(objectFES.verificarHora(hora2)==true && hora2!=citas.getHora() && fecha.equalsIgnoreCase(citas.getFecha())&&i==listaCitas.size()-1){
-                                            //      9<=hora2<15                    las horas son iguales             no se repite la fecha
+                                        
                                             System.out.println("hora disponible, patata");
                                             objetoCitas.setHora(hora2); 
                                             objetoCitas.setFecha(fecha);
@@ -346,7 +340,7 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                                             
                                         }
                                          if(objectFES.verificarHora(hora2)==true&&!fecha.equalsIgnoreCase(citas.getFecha())&&i==listaCitas.size()-1){
-                                            //      9<=hora2<15                              no se repite la fecha               
+                                                   
                                             System.out.println("hora disponible");
                                             objetoCitas.setHora(hora2); 
                                             objetoCitas.setFecha(fecha);
@@ -382,7 +376,7 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
                                             
                                         }
                                          if(objectDES.verificarHora(hora2)==true&&!fecha.equalsIgnoreCase(citas.getFecha())&&i==listaCitas.size()-1){
-                                            //      9<=hora2<15                              no se repite la fecha               
+                                            
                                             System.out.println("hora disponible");
                                             objetoCitas.setHora(hora2); 
                                             objetoCitas.setFecha(fecha);
@@ -419,17 +413,20 @@ public void agregarCitas(ArrayList<Servicios> listaServicios,ArrayList<Citas> li
     }
     
     public void mostrarCitas(ArrayList<Citas> listaCitas) {
+
         if(listaCitas.size()==0){
             System.out.println(ANSI_RED + "No hay citas para mostrar, porfavor ingrese una cita." + ANSI_RESET);
         }else{
+            Citas objCitas;
             for (int i = 0; i < listaCitas.size(); i++) {
-                setObjetoCitas(listaCitas.get(i));
+                System.out.println(listaCitas.size());
+                objCitas =listaCitas.get(i);
                 System.out.println("cita " + (i + 1));
-                System.out.println(objetoCitas.getNombreCompleto());
-                System.out.println(objetoCitas.getNumeroCelular());
-                System.out.println(objetoCitas.getFecha());
-                System.out.println(objetoCitas.getHora());
-                System.out.println(objetoCitas.getObjServicios().getNombreServicios());
+                System.out.println(objCitas.getNombreCompleto());
+                System.out.println(objCitas.getNumeroCelular());
+                System.out.println(objCitas.getFecha());
+                System.out.println(objCitas.getHora());
+                System.out.println(objCitas.getObjServicios().getNombreServicios());
                 System.out.println("----------------------------------");
             }
         }
